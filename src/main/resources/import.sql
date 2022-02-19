@@ -1,3 +1,3 @@
-insert into user values(1, 0.0, 'user1')
-insert into user values(2, 100.0, 'user2')
-insert into user values(3, 50.0, 'user3')
+insert into user values(1, 150.0, 'USD', 10001)
+insert into user values(2, 100.0, 'PLN', 10002)
+insert into user values(3, 50.0, 'EUR', 10003)

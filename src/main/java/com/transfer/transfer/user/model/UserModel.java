@@ -16,8 +16,12 @@ public class UserModel {
     private long id;
 
     @Column
-    private String currently;
+    private double balance;
 
     @Column
-    private double balance;
+    private String currency;
+
+    @Column(unique = true)
+    private long userID;
+
 }
