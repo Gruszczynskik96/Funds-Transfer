@@ -1,9 +1,8 @@
-package com.transfer.transfer.user.rest;
+package com.transfer.transfer.account.rest;
 
-import com.transfer.transfer.user.model.UserModel;
-import com.transfer.transfer.user.rest.UserRestController;
-import com.transfer.transfer.user.service.UserService;
-import com.transfer.transfer.user.validation.UserValidation;
+import com.transfer.transfer.account.model.AccountModel;
+import com.transfer.transfer.account.service.AccountService;
+import com.transfer.transfer.account.validation.AccountValidation;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,50 +15,50 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Optional;
 
-@WebMvcTest(UserRestController.class)
-public class UserRestTest {
+@WebMvcTest(AccountRestController.class)
+public class AccountRestTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private UserValidation userValidation;
+    private AccountValidation accountValidation;
 
     @MockBean
-    private UserService userService;
+    private AccountService accountService;
 
     @Test
     public void userControllerShouldReturnJsonWithUserDataFromServer() throws Exception {
-        Mockito.when(userService.getUserModel(10001L)).thenReturn(constructNewUserModel(10001L, "USD", 0.0));
+        Mockito.when(accountService.getAccount(10001L)).thenReturn(constructNewUserModel(10001L, "USD", 0.0));
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/user/10001"))
+                .get("/account/10001"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("{\"balance\":0.0,\"currency\":\"USD\",\"userID\":10001}"));
 
-        Mockito.when(userService.getUserModel(10002L)).thenReturn(constructNewUserModel(10002L, "PLN", 10.0));
+        Mockito.when(accountService.getAccount(10002L)).thenReturn(constructNewUserModel(10002L, "PLN", 10.0));
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/user/10002"))
+                        .get("/account/10002"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("{\"balance\":10.0,\"currency\":\"PLN\",\"userID\":10002}"));
 
-        Mockito.when(userService.getUserModel(10003L)).thenReturn(constructNewUserModel(10003L, "EUR", 152.7));
+        Mockito.when(accountService.getAccount(10003L)).thenReturn(constructNewUserModel(10003L, "EUR", 152.7));
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/user/10003"))
+                        .get("/account/10003"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("{\"balance\":152.7,\"currency\":\"EUR\",\"userID\":10003}"));
     }
 
-    private Optional<UserModel> constructNewUserModel(long userID, String currency, double balance) {
-        UserModel userModel = new UserModel();
-        userModel.setUserID(userID);
-        userModel.setCurrency(currency);
-        userModel.setBalance(balance);
-        return Optional.of(userModel);
+    private Optional<AccountModel> constructNewUserModel(long userID, String currency, double balance) {
+        AccountModel accountModel = new AccountModel();
+        accountModel.setUserID(userID);
+        accountModel.setCurrency(currency);
+        accountModel.setBalance(balance);
+        return Optional.of(accountModel);
     }
 }

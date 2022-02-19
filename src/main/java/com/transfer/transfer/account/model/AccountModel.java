@@ -1,4 +1,4 @@
-package com.transfer.transfer.user.model;
+package com.transfer.transfer.account.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -9,13 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
-public class UserModel {
+@Table(name = "account")
+public class AccountModel {
     @Column
     @Id
     @GeneratedValue
