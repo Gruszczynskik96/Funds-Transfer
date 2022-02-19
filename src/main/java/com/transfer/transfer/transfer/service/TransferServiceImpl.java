@@ -23,14 +23,21 @@ public class TransferServiceImpl implements TransferService {
         AccountModel accountModelTo = accountService.getAccount(userIDTo).get();
 
         if (checkIfAccountsHaveSameCurrencies(accountModelFrom.getCurrency(), accountModelTo.getCurrency())) {
-            double newBalanceFrom = accountModelFrom.getBalance() - amount;
-            accountModelFrom.setBalance(newBalanceFrom);
-            accountService.saveAccount(accountModelFrom);
-
-            double newBalanceTo = accountModelTo.getBalance() + amount;
-            accountModelTo.setBalance(newBalanceTo);
-            accountService.saveAccount(accountModelTo);
+            subtractFunds(amount, accountModelFrom);
+            addFunds(amount, accountModelTo);
         }
+    }
+
+    private void addFunds(double amount, AccountModel accountModel) {
+        double newBalance = accountModel.getBalance() + amount;
+        accountModel.setBalance(newBalance);
+        accountService.saveAccount(accountModel);
+    }
+
+    private void subtractFunds(double amount, AccountModel accountModel) {
+        double newBalance = accountModel.getBalance() - amount;
+        accountModel.setBalance(newBalance);
+        accountService.saveAccount(accountModel);
     }
 
     private boolean checkIfAccountsHaveSameCurrencies(String currencyFrom, String currencyTo) {
