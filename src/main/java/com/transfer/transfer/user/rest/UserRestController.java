@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping(path = "/user")
-public class UserRest {
+public class UserRestController {
 
     private final UserValidation userValidation;
     private final UserService userService;
 
-    public UserRest(UserValidation userValidation, UserService userService) {
+    public UserRestController(UserValidation userValidation, UserService userService) {
         this.userValidation = userValidation;
         this.userService = userService;
     }

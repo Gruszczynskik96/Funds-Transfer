@@ -1,5 +1,6 @@
 package com.transfer.transfer.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +16,10 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "user")
 public class UserModel {
-    @Id
     @Column
+    @Id
     @GeneratedValue
+    @JsonIgnore
     private long id;
 
     @Column
