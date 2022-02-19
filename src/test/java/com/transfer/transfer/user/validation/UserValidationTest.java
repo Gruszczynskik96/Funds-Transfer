@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 @SpringBootTest
 public class UserValidationTest {
 
-    private static final String USER_NOT_FOUND_BY_USER_ID_MESSAGE = "User was not found for given user ID";
+    private static final String USER_NOT_FOUND_BY_USER_ID_MESSAGE = "User was not found for given user ID: ";
 
     @Autowired
     private UserValidation userValidation;
@@ -27,9 +27,9 @@ public class UserValidationTest {
         ResponseStatusException responseStatusExceptionForUserOne = Assertions.assertThrows(ResponseStatusException.class, () -> userValidation.validateUserExists(10000L));
         ResponseStatusException responseStatusExceptionForUserTwo = Assertions.assertThrows(ResponseStatusException.class, () -> userValidation.validateUserExists(10004L));
         ResponseStatusException responseStatusExceptionForUserThree = Assertions.assertThrows(ResponseStatusException.class, () -> userValidation.validateUserExists(10005L));
-        assertResponseStatusHasCorrectlySetValues(responseStatusExceptionForUserOne, HttpStatus.NOT_FOUND, USER_NOT_FOUND_BY_USER_ID_MESSAGE);
-        assertResponseStatusHasCorrectlySetValues(responseStatusExceptionForUserTwo, HttpStatus.NOT_FOUND, USER_NOT_FOUND_BY_USER_ID_MESSAGE);
-        assertResponseStatusHasCorrectlySetValues(responseStatusExceptionForUserThree, HttpStatus.NOT_FOUND, USER_NOT_FOUND_BY_USER_ID_MESSAGE);
+        assertResponseStatusHasCorrectlySetValues(responseStatusExceptionForUserOne, HttpStatus.NOT_FOUND, USER_NOT_FOUND_BY_USER_ID_MESSAGE + 10000L);
+        assertResponseStatusHasCorrectlySetValues(responseStatusExceptionForUserTwo, HttpStatus.NOT_FOUND, USER_NOT_FOUND_BY_USER_ID_MESSAGE+ 10004L);
+        assertResponseStatusHasCorrectlySetValues(responseStatusExceptionForUserThree, HttpStatus.NOT_FOUND, USER_NOT_FOUND_BY_USER_ID_MESSAGE+ 10005L);
     }
 
     private void assertResponseStatusHasCorrectlySetValues(ResponseStatusException responseStatusException, HttpStatus httpStatus, String reason) {

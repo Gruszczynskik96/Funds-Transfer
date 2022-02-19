@@ -1,5 +1,7 @@
 package com.transfer.transfer.user.rest;
 
+import com.transfer.transfer.user.model.UserModel;
+import com.transfer.transfer.user.service.UserService;
 import com.transfer.transfer.user.validation.UserValidation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserRest {
 
     private final UserValidation userValidation;
+    private final UserService userService;
 
-    public UserRest(UserValidation userValidation) {
+    public UserRest(UserValidation userValidation, UserService userService) {
         this.userValidation = userValidation;
+        this.userService = userService;
     }
 
     @GetMapping("/{userID}")
-    public ResponseEntity<String> getUserByUserID(@PathVariable("userID") long userID) {
+    public ResponseEntity<UserModel> getUserByUserID(@PathVariable("userID") long userID) {
         userValidation.validateUserExists(userID);
-        return ResponseEntity.ok("Correct");
+        return ResponseEntity.ok(userService.getUserModel(userID).get());
     }
 }
