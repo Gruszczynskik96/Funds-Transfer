@@ -61,8 +61,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private double calculateExchangeRate(double exchangeRate, double amount) {
-        double newAmount = amount * exchangeRate;
-        return newAmount;
+        return amount * exchangeRate;
     }
 
     private boolean checkIfAccountsHaveSameCurrencies(String currencyFrom, String currencyTo) {
