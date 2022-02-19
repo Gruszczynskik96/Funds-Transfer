@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface UserService {
     /**
-        @return returns all user entries from database.
+     * Returns list of all UserModel objects saved in Database.
+     * @return List of UserModel objects.
      */
     List<UserModel> findUsers();
     Optional<UserModel> getUserModel(long userID);
