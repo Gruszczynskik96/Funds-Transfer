@@ -7,6 +7,8 @@ import com.transfer.transfer.transfer.validation.exception.TransferException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Optional;
 
@@ -61,7 +63,8 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private double calculateExchangeRate(double exchangeRate, double amount) {
-        return amount * exchangeRate;
+        BigDecimal bigDecimal = new BigDecimal(amount * exchangeRate).setScale(2, RoundingMode.DOWN);
+        return bigDecimal.doubleValue();
     }
 
     private boolean checkIfAccountsHaveSameCurrencies(String currencyFrom, String currencyTo) {

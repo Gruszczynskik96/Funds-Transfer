@@ -21,7 +21,7 @@ public class TransferServiceTest {
         AccountModel accountModelFrom = accountService.getAccount(10001L).get();
         AccountModel accountModelTo = accountService.getAccount(10002L).get();
 
-        transferService.transferMoneyBetweenAccounts(10001L, 10002L, 150.0);
+        transferService.transferMoneyBetweenAccounts(10001L, 10002L, 12.58);
 
         AccountModel accountModelFromAfterChanges = accountService.getAccount(10001L).get();
         AccountModel accountModelToAfterChanges = accountService.getAccount(10002L).get();
@@ -29,7 +29,7 @@ public class TransferServiceTest {
         Assertions.assertNotEquals(accountModelFrom.getBalance(), accountModelFromAfterChanges.getBalance());
         Assertions.assertNotEquals(accountModelTo.getBalance(), accountModelToAfterChanges.getBalance());
 
-        Assertions.assertEquals(accountModelFromAfterChanges.getBalance(), accountModelFrom.getBalance() - 150.0);
+        Assertions.assertEquals(accountModelFromAfterChanges.getBalance(), accountModelFrom.getBalance() - 12.58);
         Assertions.assertEquals(accountModelToAfterChanges.getBalance(), accountModelTo.getBalance() + 150.0);
     }
 }
