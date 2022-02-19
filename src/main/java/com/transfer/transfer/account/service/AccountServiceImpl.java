@@ -24,4 +24,9 @@ public class AccountServiceImpl implements AccountService {
     public Optional<AccountModel> getAccount(long userID) {
         return Optional.ofNullable(accountRepository.getByUserID(userID));
     }
+
+    @Override
+    public void saveAccount(AccountModel accountModel) {
+        accountRepository.save(accountModel);
+    }
 }

@@ -20,4 +20,9 @@ public class AccountValidationImpl implements AccountValidation {
     public void validateAccountExists(long userID) {
         accountService.getAccount(userID).orElseThrow(() -> new AccountException(HttpStatus.NOT_FOUND, ACCOUNT_NOT_FOUND_BY_USER_ID_MESSAGE + userID));
     }
+
+    @Override
+    public void validateAccountUserIDsAreDifferent(long userIDFrom, long userIDTo) {
+
+    }
 }

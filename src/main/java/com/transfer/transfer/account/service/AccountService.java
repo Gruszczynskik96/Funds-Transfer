@@ -18,4 +18,10 @@ public interface AccountService {
      * @return Optional of AccountModel, or empty Optional
      */
     Optional<AccountModel> getAccount(long userID);
+
+    /**
+     * Saves the AccountModel, or creates a new table entry for given AccountModel
+     * @param accountModel AccountModel object to save
+     */
+    void saveAccount(AccountModel accountModel);
 }
