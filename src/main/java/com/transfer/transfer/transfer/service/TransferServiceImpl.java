@@ -5,6 +5,7 @@ import com.transfer.transfer.account.model.AccountModel;
 import com.transfer.transfer.account.service.AccountService;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class TransferServiceImpl implements TransferService {
 
@@ -21,10 +22,13 @@ public class TransferServiceImpl implements TransferService {
     public void transferMoneyBetweenAccounts(long userIDFrom, long userIDTo, double amount) {
         AccountModel accountModelFrom = accountService.getAccount(userIDFrom).get();
         AccountModel accountModelTo = accountService.getAccount(userIDTo).get();
+        String currencySender = accountModelFrom.getCurrency();
+        String currencyReceiver = accountModelTo.getCurrency();
 
         if (checkIfAccountsHaveSameCurrencies(accountModelFrom.getCurrency(), accountModelTo.getCurrency())) {
             subtractFunds(amount, accountModelFrom);
             addFunds(amount, accountModelTo);
+        } else {
         }
     }
 

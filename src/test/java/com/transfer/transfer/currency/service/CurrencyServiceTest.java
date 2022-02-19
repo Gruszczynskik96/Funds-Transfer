@@ -1,11 +1,11 @@
 package com.transfer.transfer.currency.service;
 
+import com.transfer.transfer.currency.validation.exception.CurrencyException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.money.UnknownCurrencyException;
 
 @SpringBootTest
 public class CurrencyServiceTest {
@@ -15,15 +15,12 @@ public class CurrencyServiceTest {
 
     @Test
     public void shouldThrowExceptionOnInvalidCurrency() {
-        Assertions.assertThrows(UnknownCurrencyException.class, () -> currencyService.getCurrencyUnit("ABC"));
-        Assertions.assertThrows(UnknownCurrencyException.class, () -> currencyService.getCurrencyUnit("EURO"));
-        Assertions.assertThrows(UnknownCurrencyException.class, () -> currencyService.getCurrencyUnit("UDP"));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyService.getCurrencyExchangeRates("Abd"));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyService.getCurrencyExchangeRates("USP"));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyService.getCurrencyExchangeRates(" "));
     }
 
     @Test
     public void shouldNotThrowExceptionOnValidCurrency() {
-        Assertions.assertDoesNotThrow(() -> currencyService.getCurrencyUnit("USD"));
-        Assertions.assertDoesNotThrow(() -> currencyService.getCurrencyUnit("PLN"));
-        Assertions.assertDoesNotThrow(() -> currencyService.getCurrencyUnit("EUR"));
     }
 }
