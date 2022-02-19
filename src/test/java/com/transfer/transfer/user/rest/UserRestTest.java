@@ -1,4 +1,4 @@
-package com.transfer.transfer.rest;
+package com.transfer.transfer.user.rest;
 
 import com.transfer.transfer.user.model.UserModel;
 import com.transfer.transfer.user.rest.UserRestController;
