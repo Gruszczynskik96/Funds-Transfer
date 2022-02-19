@@ -3,7 +3,11 @@ package com.transfer.transfer.user.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -23,5 +27,4 @@ public class UserModel {
 
     @Column(unique = true)
     private long userID;
-
 }
