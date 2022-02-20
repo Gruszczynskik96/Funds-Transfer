@@ -4,12 +4,19 @@ import com.transfer.transfer.account.validation.exception.AccountException;
 
 public interface AccountValidation {
     /**
-     * /**
+     *
      * Validates if AccountModel object with given User ID exists in database. Throws AccountException if entry is not found.
      * @param userID AccountModel's userID.
      * @throws AccountException Throws AccountException if User is not found.
      */
     void validateAccountExists(long userID) throws AccountException;
+
+    /**
+     * Validates if AccountModel with give User ID does not exist in database. Throws AccountException if entry is found.
+     * @param userID Account Model's user ID
+     * @throws AccountException Throws AccountException if User is found.
+     */
+    void validateAccountDoesNotExist(long userID) throws AccountException;
 
     /**
      * Validates if User IDs are different.

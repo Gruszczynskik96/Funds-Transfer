@@ -69,6 +69,18 @@ public class AccountValidationTest {
         Assertions.assertDoesNotThrow(() -> accountValidation.validateAccountUserIDsAreDifferent(101L, 102L));
     }
 
+    @Test
+    public void shouldThrowExceptionIfAccountWithUserIDAlreadyExists() {
+        Mockito.when(accountService.getAccount(Mockito.anyLong())).thenReturn(Mockito.mock(AccountModel.class));
+        Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountDoesNotExist(Mockito.anyLong()));
+    }
+
+    @Test
+    public void shouldNotThrowExceptionIfAccountWithUserIDDoesNotExist() {
+        Mockito.when(accountService.getAccount(Mockito.anyLong())).thenReturn(null);
+        Assertions.assertDoesNotThrow(() -> accountValidation.validateAccountDoesNotExist(Mockito.anyLong()));
+    }
+
     private void assertExceptionHasCorrectlySetValues(AccountException AccountException, HttpStatus httpStatus, String reason) {
         Assertions.assertEquals(AccountException.getStatus(), httpStatus);
         Assertions.assertEquals(AccountException.getReason(), reason);

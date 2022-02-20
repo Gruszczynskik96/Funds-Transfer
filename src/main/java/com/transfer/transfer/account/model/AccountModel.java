@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -24,14 +25,14 @@ public class AccountModel {
     private long id;
 
     @Column(name = "balance")
-    @NotBlank(message = "Balance cannot be empty")
+    @NotNull
     private double balance;
 
     @Column(name = "currency")
-    @NotBlank(message = "Currency cannot be empty")
+    @NotBlank
     private String currency;
 
     @Column(name = "userID", unique = true)
-    @NotBlank(message = "User ID cannot be empty")
+    @NotNull
     private long userID;
 }
