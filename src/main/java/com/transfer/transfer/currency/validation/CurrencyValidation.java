@@ -15,9 +15,9 @@ public interface CurrencyValidation {
 
     /**
      * Validates if String result parameter of GET request response body is valid.
-     * @param result String result parameter from request response body.
+     * @param result Optional of String result parameter from request response body.
      */
-    void validateGetResultIsCorrect(String result);
+    void validateGetResultIsCorrect(Optional<String> result);
 
     /**
      * Validates and returns exchange rates if such exists, or throws CurrencyException if Optional is empty

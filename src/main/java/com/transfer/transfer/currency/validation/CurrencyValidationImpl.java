@@ -16,7 +16,7 @@ public class CurrencyValidationImpl implements CurrencyValidation {
 
     private static final String EXCHANGE_RATES_NOT_FOUND_MESSAGE = "Exchange rates could not be found!";
     private static final String CURRENCY_ERROR_RESPONSE_TEXT = "Currency exchange rates could not be extracted for: ";
-    private static final String ERROR_RESULT_KEY = "error";
+    private static final String RESULT_KEY_EXPECTED = "success";
 
     @Override
     public void validateStatusCode(int statusCode) throws CurrencyException {
@@ -27,9 +27,8 @@ public class CurrencyValidationImpl implements CurrencyValidation {
     }
 
     @Override
-    public void validateGetResultIsCorrect(String result) {
-        if (result.equals(ERROR_RESULT_KEY)) {
-            log.error(CURRENCY_ERROR_RESPONSE_TEXT);
+    public void validateGetResultIsCorrect(Optional<String> result) {
+        if (result.isEmpty() || !result.get().equals(RESULT_KEY_EXPECTED)) {
             throw new CurrencyException(HttpStatus.NOT_FOUND, EXCHANGE_RATES_NOT_FOUND_MESSAGE);
         }
     }

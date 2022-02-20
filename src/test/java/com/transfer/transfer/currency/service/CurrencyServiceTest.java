@@ -27,16 +27,16 @@ public class CurrencyServiceTest {
     }
 
     @Test
-    public void shouldReturnExchangeRates() {
+    public void shouldReturnExchangeRatesMapWithEntries() {
         Assertions.assertTrue(currencyService.getCurrencyExchangeRates("USD").size() > 0);
         Assertions.assertTrue(currencyService.getCurrencyExchangeRates("EUR").size() > 0);
         Assertions.assertTrue(currencyService.getCurrencyExchangeRates("PLN").size() > 0);
     }
 
     @Test
-    public void shouldReturnMapWithEntriesForExchangeRates() {
-        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("USD").size() > 0);
-        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("PLN").size() > 0);
-        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("EUR").size() > 0);
+    public void mapShouldHaveEntriesWithCurrencyExchangeForCorrectCurrencies() {
+        Assertions.assertNotNull(currencyService.getCurrencyExchangeRates("USD").get("PLN"));
+        Assertions.assertNotNull(currencyService.getCurrencyExchangeRates("PLN").get("EUR"));
+        Assertions.assertNotNull(currencyService.getCurrencyExchangeRates("EUR").get("USD"));
     }
 }

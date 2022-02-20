@@ -1,14 +1,9 @@
 package com.transfer.transfer.currency.service;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.transfer.transfer.currency.validation.CurrencyValidation;
-import com.transfer.transfer.currency.validation.exception.CurrencyException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -58,7 +53,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
             StringBuffer responseString = readResponseBodyFromInputStream(httpURLConnection.getInputStream());
             JsonObject jsonObject = new JsonParser().parse(responseString.toString()).getAsJsonObject();
-            String result = jsonObject.get(RESULT_RESPONSE_KEY).getAsString();
+            Optional<String> result = Optional.ofNullable(jsonObject.get(RESULT_RESPONSE_KEY).getAsString());
 
             currencyValidation.validateGetResultIsCorrect(result);
 
@@ -66,8 +61,8 @@ public class CurrencyServiceImpl implements CurrencyService {
 
             Type mapOfStringAndDoubleType = new TypeToken<Map<String, Double>>(){}.getType();
             currencyExchangeRates = Optional.of(new Gson().fromJson(jsonElement, mapOfStringAndDoubleType));
-        } catch (IOException e) {
-            log.error("There was an error while trying to get data from URL Connection!", e);
+        } catch (JsonParseException | IOException exception) {
+            log.error("There was an error while trying to get data from URL Connection!", exception);
         } finally {
             if (httpURLConnection != null) {
                 httpURLConnection.disconnect();
