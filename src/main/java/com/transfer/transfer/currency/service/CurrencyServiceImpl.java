@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.transfer.transfer.currency.validation.CurrencyValidation;
 import com.transfer.transfer.currency.validation.exception.CurrencyException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,16 +27,21 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     private static final String OPEN_ER_API_URL = "https://open.er-api.com/v6/latest/";
     private static final String GET_REQUEST_METHOD = "GET";
-    private static final String CURRENCY_ERROR_RESPONSE_TEXT = "Currency code could not be extracted for: ";
+
     private static final String RATES_RESPONSE_KEY = "rates";
     private static final String RESULT_RESPONSE_KEY = "result";
-    private static final String ERROR_RESULT_KEY = "error";
 
-    private static final int SUCCESS_HTTP_REQUEST_CODE = 200;
+
     private static final int CONNECT_TIMEOUT_MILLISECONDS = 5000;
 
+    private final CurrencyValidation currencyValidation;
+
+    public CurrencyServiceImpl(CurrencyValidation currencyValidation) {
+        this.currencyValidation = currencyValidation;
+    }
+
     @Override
-    public Optional<Map<String, Double>> getCurrencyExchangeRates(String currency) {
+    public Map<String, Double> getCurrencyExchangeRates(String currency) {
         Optional<Map<String, Double>> currencyExchangeRates = Optional.empty();
         HttpURLConnection httpURLConnection = null;
 
@@ -48,19 +54,14 @@ public class CurrencyServiceImpl implements CurrencyService {
 
             int statusCode = httpURLConnection.getResponseCode();
 
-            if (statusCode != SUCCESS_HTTP_REQUEST_CODE) {
-                log.error("Could not get exchange rates for currency {}, status code: {}", currency, statusCode);
-                throw new CurrencyException(HttpStatus.NOT_FOUND, CURRENCY_ERROR_RESPONSE_TEXT + currency);
-            }
+            currencyValidation.validateStatusCode(statusCode);
 
             StringBuffer responseString = readResponseBodyFromInputStream(httpURLConnection.getInputStream());
             JsonObject jsonObject = new JsonParser().parse(responseString.toString()).getAsJsonObject();
             String result = jsonObject.get(RESULT_RESPONSE_KEY).getAsString();
 
-            if (result.equals(ERROR_RESULT_KEY)) {
-                log.error("Could not get exchange rates for currency {}", currency);
-                throw new CurrencyException(HttpStatus.NOT_FOUND, CURRENCY_ERROR_RESPONSE_TEXT + currency);
-            }
+            currencyValidation.validateGetResultIsCorrect(result);
+
             JsonElement jsonElement = jsonObject.get(RATES_RESPONSE_KEY);
 
             Type mapOfStringAndDoubleType = new TypeToken<Map<String, Double>>(){}.getType();
@@ -72,7 +73,7 @@ public class CurrencyServiceImpl implements CurrencyService {
                 httpURLConnection.disconnect();
             }
         }
-        return currencyExchangeRates;
+        return currencyValidation.validateExchangeRatesAreReturned(currencyExchangeRates);
     }
 
     private StringBuffer readResponseBodyFromInputStream(InputStream inputStream) throws IOException {

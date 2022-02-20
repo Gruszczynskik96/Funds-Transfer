@@ -45,7 +45,7 @@ public class AccountRestTest {
     }
 
     @Test
-    public void userControllerShouldReturnJsonWithUserDataFromServer() throws Exception {
+    public void shouldReturnJsonWithUserDataFromServer() throws Exception {
         Mockito.when(accountService.getAccount(10001L)).thenReturn(constructNewUserModel(10001L, "USD", 0.0));
 
         this.mockMvc.perform(MockMvcRequestBuilders

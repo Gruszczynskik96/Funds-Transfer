@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class CurrencyServiceTest {
 
     @Autowired
-    CurrencyService currencyService;
+    private CurrencyService currencyService;
 
     @Test
     public void shouldThrowExceptionOnInvalidCurrency() {
@@ -22,5 +22,15 @@ public class CurrencyServiceTest {
 
     @Test
     public void shouldNotThrowExceptionOnValidCurrency() {
+        Assertions.assertDoesNotThrow(() -> currencyService.getCurrencyExchangeRates("USD"));
+        Assertions.assertDoesNotThrow(() -> currencyService.getCurrencyExchangeRates("PLN"));
+        Assertions.assertDoesNotThrow(() -> currencyService.getCurrencyExchangeRates("EUR"));
+    }
+
+    @Test
+    public void shouldReturnExchangeRates() {
+        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("USD").size() > 0);
+        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("EUR").size() > 0);
+        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("PLN").size() > 0);
     }
 }

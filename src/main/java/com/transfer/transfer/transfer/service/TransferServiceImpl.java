@@ -39,15 +39,13 @@ public class TransferServiceImpl implements TransferService {
             changeBalances(amount, accountModelFrom, amount, accountModelTo);
         } else {
             Map<String, Double> exchangeRates = currencyService
-                    .getCurrencyExchangeRates(currencySender)
-                    .orElseThrow(() -> new TransferException(HttpStatus.NOT_FOUND, "Cannot retrieve currency exchange rates for currency: " + currencySender));
+                    .getCurrencyExchangeRates(currencySender);
 
             double exchangeRate = Optional
                     .of(exchangeRates.get(currencyReceiver))
                     .orElseThrow(() -> new TransferException(HttpStatus.NOT_FOUND, "Cannot retrieve currency exchange rates for currency: " + currencyReceiver));
 
             double amountToSend = calculateExchangeRate(exchangeRate, amount);
-
             changeBalances(amount, accountModelFrom, amountToSend, accountModelTo);
         }
     }

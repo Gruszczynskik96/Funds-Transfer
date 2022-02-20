@@ -24,13 +24,13 @@ public class AccountValidationTest {
     private AccountService accountService;
 
     @Test
-    public void assertUserValidationThrowsException() {
+    public void shouldThrowExceptionWhenAccountIsNotFound() {
         Mockito.when(accountService.getAccount(Mockito.anyLong())).thenReturn(null);
         Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountExists(Mockito.anyLong()));
     }
 
     @Test
-    public void assertNotFoundAccountExceptionIsCorrectlySet() {
+    public void shouldThrowExceptionWithCorrectMessageIfAccountIsNotFound() {
         AccountException responseStatusExceptionForUserOne = Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountExists(10000L));
         AccountException responseStatusExceptionForUserTwo = Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountExists(10004L));
         AccountException responseStatusExceptionForUserThree = Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountExists(10005L));
@@ -40,20 +40,20 @@ public class AccountValidationTest {
     }
 
     @Test
-    public void assertDoesNotThrowExceptionOnCorrectData() {
+    public void shouldNotThrowExceptionWhenAccountIsFound() {
         Mockito.when(accountService.getAccount(Mockito.anyLong())).thenReturn(Mockito.mock(AccountModel.class));
         Assertions.assertDoesNotThrow(() -> accountValidation.validateAccountExists(Mockito.anyLong()));
     }
 
     @Test
-    public void assertThrowsExceptionOnSameUserIDs() {
+    public void shouldThrowExceptionIfIDsAreSame() {
         Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountUserIDsAreDifferent(1L, 1L));
         Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountUserIDsAreDifferent(10L, 10L));
         Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountUserIDsAreDifferent(101L, 101L));
     }
 
     @Test
-    public void asserSameUDsAccountExceptionIsCorrectlySet() {
+    public void shouldThrowExceptionWithCorrectMessageIfIDsAreSame() {
         AccountException responseStatusExceptionForUserOne = Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountUserIDsAreDifferent(1L, 1L));
         AccountException responseStatusExceptionForUserTwo = Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountUserIDsAreDifferent(10L, 10L));
         AccountException responseStatusExceptionForUserThree = Assertions.assertThrows(AccountException.class, () -> accountValidation.validateAccountUserIDsAreDifferent(100L, 100L));
@@ -63,7 +63,7 @@ public class AccountValidationTest {
     }
 
     @Test
-    public void assertDoesNotThrowExceptionOnDifferentUserIDs() {
+    public void shouldNotThrowExceptionIfIDsAreDifferent() {
         Assertions.assertDoesNotThrow(() -> accountValidation.validateAccountUserIDsAreDifferent(1L, 2L));
         Assertions.assertDoesNotThrow(() -> accountValidation.validateAccountUserIDsAreDifferent(10L, 11L));
         Assertions.assertDoesNotThrow(() -> accountValidation.validateAccountUserIDsAreDifferent(101L, 102L));

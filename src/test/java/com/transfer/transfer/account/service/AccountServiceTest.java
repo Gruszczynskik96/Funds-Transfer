@@ -18,14 +18,14 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void assertUserModelIsEmptyIfNotPresent() {
+    public void shouldReturnNullIfAccountIsNotFound() {
         Assertions.assertNull(accountService.getAccount(10000L));
         Assertions.assertNull(accountService.getAccount(10004L));
         Assertions.assertNull(accountService.getAccount(10005L));
     }
 
     @Test
-    public void assertUserEntriesAreCorrectlyInserted() {
+    public void shouldReturnCorrectModelIfAccountIsFound() {
         AccountModel firstAccountModel = accountService.getAccount(10001L);
         AccountModel secondAccountModel = accountService.getAccount(10002L);
         AccountModel thirdAccountModel = accountService.getAccount(10003L);
