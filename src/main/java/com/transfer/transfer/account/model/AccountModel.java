@@ -25,14 +25,14 @@ public class AccountModel {
     private long id;
 
     @Column(name = "balance")
-    @NotNull
+    @NotNull(message = "Balance cannot be null!")
     private double balance;
 
     @Column(name = "currency")
-    @NotBlank
+    @NotBlank(message = "Currency cannot be blank or null!")
     private String currency;
 
     @Column(name = "userID", unique = true)
-    @NotNull
+    @NotNull(message = "User ID cannot be null!")
     private long userID;
 }
