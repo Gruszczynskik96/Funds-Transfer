@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
@@ -38,5 +40,46 @@ public class CurrencyValidationTest {
     @Test
     public void shouldNotThrowExceptionWhenResultParameterIsCorrect() {
         Assertions.assertDoesNotThrow(() -> currencyValidation.validateGetResultIsCorrect(Optional.of(RESULT_KEY_EXPECTED)));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenExchangeRatesAreEmpty() {
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateExchangeRatesAreReturned(Optional.empty()));
+    }
+
+    @Test
+    public void shouldNotThrowExceptionWhenExchangeRatesAreReturned() {
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateExchangeRatesAreReturned(Optional.of(Collections.emptyMap())));
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateExchangeRatesAreReturned(Optional.of(Map.ofEntries(Map.entry("v", 0.0)))));
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateExchangeRatesAreReturned(Optional.of(Map.ofEntries(Map.entry("USD", 0.0)))));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenExchangeRateCannotBeRetrievedForGivenCurrency() {
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateExchangeRateExists(Collections.emptyMap(), ""));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateExchangeRateExists(Collections.emptyMap(), "ABC"));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateExchangeRateExists(Collections.emptyMap(), "USD"));
+    }
+
+    @Test
+    public void shouldNotThrowExceptionWhenExchangeRateCanBeRetrievedForGivenCurrency() {
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateExchangeRateExists(Map.ofEntries(Map.entry("USD", 0.0)), "USD"));
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateExchangeRateExists(Map.ofEntries(Map.entry("PLN", 0.0), Map.entry("USD", 0.0)), "PLN"));
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateExchangeRateExists(Map.ofEntries(Map.entry("EUR", 1.0)), "EUR"));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenCurrencyStringIsEmpty() {
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateCurrencyIsNotEmpty(Optional.empty()));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateCurrencyIsNotEmpty(Optional.of("")));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateCurrencyIsNotEmpty(Optional.of(" ")));
+        Assertions.assertThrows(CurrencyException.class, () -> currencyValidation.validateCurrencyIsNotEmpty(Optional.of("    ")));
+    }
+
+    @Test
+    public void shouldNotThrowExceptionWhenCurrencyStringIsPresent() {
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateCurrencyIsNotEmpty(Optional.of("s")));
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateCurrencyIsNotEmpty(Optional.of("USD")));
+        Assertions.assertDoesNotThrow(() -> currencyValidation.validateCurrencyIsNotEmpty(Optional.of("String")));
     }
 }

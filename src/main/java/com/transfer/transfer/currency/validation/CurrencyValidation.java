@@ -35,4 +35,10 @@ public interface CurrencyValidation {
      * @throws CurrencyException Throws CurrencyException if rate cannot be retrieved.
      */
     double validateExchangeRateExists(Map<String, Double> exchangeRates, String currency) throws CurrencyException;
+
+    /**
+     * Validates given currency is not empty or null
+     * @param currency Optional of String
+     */
+    void validateCurrencyIsNotEmpty(Optional<String> currency) throws CurrencyException;
 }

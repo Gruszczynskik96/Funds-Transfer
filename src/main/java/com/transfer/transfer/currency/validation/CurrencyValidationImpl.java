@@ -16,6 +16,7 @@ public class CurrencyValidationImpl implements CurrencyValidation {
 
     private static final String EXCHANGE_RATES_NOT_FOUND_MESSAGE = "Exchange rates could not be found!";
     private static final String CURRENCY_ERROR_RESPONSE_TEXT = "Currency exchange rates could not be extracted for: ";
+    private static final String CURRENCY_CANNOT_BE_EMPTY = "Currency cannot be empty!";
     private static final String RESULT_KEY_EXPECTED = "success";
 
     @Override
@@ -41,7 +42,14 @@ public class CurrencyValidationImpl implements CurrencyValidation {
 
     @Override
     public double validateExchangeRateExists(Map<String, Double> exchangeRates, String currency) throws CurrencyException {
-        return Optional.of(exchangeRates.get(currency))
+        return Optional.ofNullable(exchangeRates.get(currency))
                 .orElseThrow(() -> new CurrencyException(HttpStatus.NOT_FOUND, CURRENCY_ERROR_RESPONSE_TEXT + currency));
+    }
+
+    @Override
+    public void validateCurrencyIsNotEmpty(Optional<String> currency) throws CurrencyException {
+        if (currency.isEmpty() || currency.get().trim().isEmpty()) {
+            throw new CurrencyException(HttpStatus.NOT_ACCEPTABLE, CURRENCY_CANNOT_BE_EMPTY);
+        }
     }
 }
