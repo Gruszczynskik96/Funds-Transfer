@@ -58,19 +58,17 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private void addFunds(double amount, AccountModel accountModel) {
-        double newBalance = accountModel.getBalance() + amount;
-        accountModel.setBalance(newBalance);
+        accountModel.setBalance(new BigDecimal(accountModel.getBalance() + amount).setScale(2, RoundingMode.HALF_DOWN).doubleValue());
         accountService.saveAccount(accountModel);
     }
 
     private void subtractFunds(double amount, AccountModel accountModel) {
-        double newBalance = accountModel.getBalance() - amount;
-        accountModel.setBalance(newBalance);
+        accountModel.setBalance(new BigDecimal(accountModel.getBalance() - amount).setScale(2, RoundingMode.HALF_DOWN).doubleValue());
         accountService.saveAccount(accountModel);
     }
 
     private double calculateExchangeRate(double exchangeRate, double amount) {
-        BigDecimal bigDecimal = new BigDecimal(amount * exchangeRate).setScale(2, RoundingMode.DOWN);
+        BigDecimal bigDecimal = new BigDecimal(amount * exchangeRate).setScale(2, RoundingMode.HALF_DOWN);
         return bigDecimal.doubleValue();
     }
 

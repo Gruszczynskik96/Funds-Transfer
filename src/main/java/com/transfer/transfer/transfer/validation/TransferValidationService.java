@@ -3,12 +3,10 @@ package com.transfer.transfer.transfer.validation;
 import com.transfer.transfer.account.model.AccountModel;
 import com.transfer.transfer.account.service.AccountService;
 import com.transfer.transfer.transfer.validation.exception.TransferException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class TransferValidationService implements TransferValidation {
 
     private static final String BALANCE_NOT_SUFFICIENT_ERROR_MESSAGE = "Current balance is not sufficient: ";
