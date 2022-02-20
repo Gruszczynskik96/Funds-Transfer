@@ -20,10 +20,19 @@ public interface CurrencyValidation {
     void validateGetResultIsCorrect(String result);
 
     /**
-     * This method validates and returns exchange rates if such exists, or throws CurrencyException if Optional is empty
+     * Validates and returns exchange rates if such exists, or throws CurrencyException if Optional is empty
      * @param exchangeRates Optional value of exchange rates. Either empty Optional, or Map.
      * @return Returns the Map of exchange rates.
      * @throws CurrencyException Throws CurrencyException if rates could not be extracted.
      */
     Map<String, Double> validateExchangeRatesAreReturned(Optional<Map<String, Double>> exchangeRates) throws CurrencyException;
+
+    /**
+     * Validates and returns exchange rate for given currency from map of exchange rates, or throws CurrencyException if exchange rate cannot be retrieved.
+     * @param exchangeRates Map representation of exchange rates.
+     * @param currency Currency ID searched in map of exchange rates.
+     * @return Returns exchange rate of given currency.
+     * @throws CurrencyException Throws CurrencyException if rate cannot be retrieved.
+     */
+    double validateExchangeRateExists(Map<String, Double> exchangeRates, String currency) throws CurrencyException;
 }

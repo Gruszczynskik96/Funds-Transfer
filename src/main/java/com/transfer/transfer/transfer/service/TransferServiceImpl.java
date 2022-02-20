@@ -3,15 +3,13 @@ package com.transfer.transfer.transfer.service;
 import com.transfer.transfer.currency.service.CurrencyService;
 import com.transfer.transfer.account.model.AccountModel;
 import com.transfer.transfer.account.service.AccountService;
+import com.transfer.transfer.currency.validation.CurrencyValidation;
 import com.transfer.transfer.transfer.validation.TransferValidation;
-import com.transfer.transfer.transfer.validation.exception.TransferException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class TransferServiceImpl implements TransferService {
@@ -19,13 +17,16 @@ public class TransferServiceImpl implements TransferService {
     private final CurrencyService currencyService;
     private final AccountService accountService;
     private final TransferValidation transferValidation;
+    private final CurrencyValidation currencyValidation;
 
     public TransferServiceImpl(CurrencyService currencyService,
                                AccountService accountService,
-                               TransferValidation transferValidation) {
+                               TransferValidation transferValidation,
+                               CurrencyValidation currencyValidation) {
         this.currencyService = currencyService;
         this.accountService = accountService;
         this.transferValidation = transferValidation;
+        this.currencyValidation = currencyValidation;
     }
 
     @Override
@@ -41,9 +42,7 @@ public class TransferServiceImpl implements TransferService {
             Map<String, Double> exchangeRates = currencyService
                     .getCurrencyExchangeRates(currencySender);
 
-            double exchangeRate = Optional
-                    .of(exchangeRates.get(currencyReceiver))
-                    .orElseThrow(() -> new TransferException(HttpStatus.NOT_FOUND, "Cannot retrieve currency exchange rates for currency: " + currencyReceiver));
+            double exchangeRate = currencyValidation.validateExchangeRateExists(exchangeRates, currencyReceiver);
 
             double amountToSend = calculateExchangeRate(exchangeRate, amount);
             changeBalances(amount, accountModelFrom, amountToSend, accountModelTo);
