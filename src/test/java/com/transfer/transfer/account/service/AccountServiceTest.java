@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
-
 @SpringBootTest
 public class AccountServiceTest {
 
@@ -28,9 +26,18 @@ public class AccountServiceTest {
 
     @Test
     public void assertUserEntriesAreCorrectlyInserted() {
-        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10001L), 10001L, "USD", 150.0));
-        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10002L), 10002L, "PLN", 100.0));
-        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10003L), 10003L, "EUR", 50.0));
+        AccountModel firstAccountModel = accountService.getAccount(10001L);
+        AccountModel secondAccountModel = accountService.getAccount(10002L);
+        AccountModel thirdAccountModel = accountService.getAccount(10003L);
+
+        Assertions.assertNotNull(firstAccountModel);
+        Assertions.assertTrue(checkIfUserModelEqualsValues(firstAccountModel, 10001L, "USD", 150.0));
+
+        Assertions.assertNotNull(secondAccountModel);
+        Assertions.assertTrue(checkIfUserModelEqualsValues(secondAccountModel, 10002L, "PLN", 100.0));
+
+        Assertions.assertNotNull(thirdAccountModel);
+        Assertions.assertTrue(checkIfUserModelEqualsValues(thirdAccountModel, 10003L, "EUR", 50.0));
     }
 
     private boolean checkIfUserModelEqualsValues(AccountModel accountModel, long expectedUserID, String expectedCurrency, double expectedBalance) {

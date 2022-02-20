@@ -11,7 +11,7 @@ import java.util.Optional;
 public class AccountValidationImpl implements AccountValidation {
 
     private static final String ACCOUNT_NOT_FOUND_BY_USER_ID_MESSAGE = "Account was not found for given user ID: ";
-    private static final String ACCOUNTS_HAVE_SAME_IDS_MESSAGE = "Cannot transfer money to same account!";
+    private static final String ACCOUNTS_HAVE_SAME_IDS_MESSAGE = "Cannot transfer money to same account! User ID: ";
 
     private final AccountService accountService;
 
@@ -28,7 +28,7 @@ public class AccountValidationImpl implements AccountValidation {
     @Override
     public void validateAccountUserIDsAreDifferent(long userIDFrom, long userIDTo) throws AccountException {
         if (userIDFrom == userIDTo) {
-            throw new AccountException(HttpStatus.CONFLICT, ACCOUNTS_HAVE_SAME_IDS_MESSAGE);
+            throw new AccountException(HttpStatus.CONFLICT, ACCOUNTS_HAVE_SAME_IDS_MESSAGE + userIDFrom);
         }
     }
 }
