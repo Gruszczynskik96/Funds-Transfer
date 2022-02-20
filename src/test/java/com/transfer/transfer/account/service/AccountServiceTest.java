@@ -21,16 +21,16 @@ public class AccountServiceTest {
 
     @Test
     public void assertUserModelIsEmptyIfNotPresent() {
-        Assertions.assertEquals(accountService.getAccount(10000L), Optional.empty());
-        Assertions.assertEquals(accountService.getAccount(10004L), Optional.empty());
-        Assertions.assertEquals(accountService.getAccount(10005L), Optional.empty());
+        Assertions.assertNull(accountService.getAccount(10000L));
+        Assertions.assertNull(accountService.getAccount(10004L));
+        Assertions.assertNull(accountService.getAccount(10005L));
     }
 
     @Test
     public void assertUserEntriesAreCorrectlyInserted() {
-        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10001L).get(), 10001L, "USD", 150.0));
-        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10002L).get(), 10002L, "PLN", 100.0));
-        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10003L).get(), 10003L, "EUR", 50.0));
+        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10001L), 10001L, "USD", 150.0));
+        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10002L), 10002L, "PLN", 100.0));
+        Assertions.assertTrue(checkIfUserModelEqualsValues(accountService.getAccount(10003L), 10003L, "EUR", 50.0));
     }
 
     private boolean checkIfUserModelEqualsValues(AccountModel accountModel, long expectedUserID, String expectedCurrency, double expectedBalance) {

@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(path = "/account")
 public class AccountRestController {
 
-    private final AccountValidation userValidation;
+    private final AccountValidation accountValidation;
     private final AccountService accountService;
 
-    public AccountRestController(AccountValidation userValidation, AccountService accountService) {
-        this.userValidation = userValidation;
+    public AccountRestController(AccountValidation accountValidation,
+                                 AccountService accountService) {
+        this.accountValidation = accountValidation;
         this.accountService = accountService;
     }
 
     @GetMapping("/{userID}")
     public ResponseEntity<AccountModel> getUserByUserID(@PathVariable("userID") long userID) {
-        userValidation.validateAccountExists(userID);
-        return ResponseEntity.ok(accountService.getAccount(userID).get());
+        accountValidation.validateAccountExists(userID);
+        return ResponseEntity.ok(accountService.getAccount(userID));
     }
 }

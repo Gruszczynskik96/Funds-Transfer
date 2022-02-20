@@ -1,16 +1,21 @@
 package com.transfer.transfer.account.validation;
 
+import com.transfer.transfer.account.validation.exception.AccountException;
+
 public interface AccountValidation {
     /**
+     * /**
      * Validates if AccountModel object with given User ID exists in database. Throws AccountException if entry is not found.
      * @param userID AccountModel's userID.
+     * @throws AccountException Throws AccountException if User is not found.
      */
-    void validateAccountExists(long userID);
+    void validateAccountExists(long userID) throws AccountException;
 
     /**
      * Validates if User IDs are different.
-     * @param userIDFrom User ID of AccountModel from which money is to be taken from.
-     * @param userIDTo User ID of AccountModel from which money is to be transferred to.
+     * @param userIDSender User ID of AccountModel from which money is to be taken from.
+     * @param userIDReceiver User ID of AccountModel to which money is to be transferred to.
+     * @throws AccountException Throws AccountException if both values are the same.
      */
-    void validateAccountUserIDsAreDifferent(long userIDFrom, long userIDTo);
+    void validateAccountUserIDsAreDifferent(long userIDSender, long userIDReceiver) throws AccountException;
 }

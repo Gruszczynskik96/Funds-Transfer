@@ -5,7 +5,6 @@ import com.transfer.transfer.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -21,8 +20,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Optional<AccountModel> getAccount(long userID) {
-        return Optional.ofNullable(accountRepository.getByUserID(userID));
+    public AccountModel getAccount(long userID) {
+        return accountRepository.getByUserID(userID);
     }
 
     @Override

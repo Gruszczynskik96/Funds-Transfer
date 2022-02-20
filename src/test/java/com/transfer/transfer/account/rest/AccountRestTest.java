@@ -3,6 +3,7 @@ package com.transfer.transfer.account.rest;
 import com.transfer.transfer.account.model.AccountModel;
 import com.transfer.transfer.account.service.AccountService;
 import com.transfer.transfer.account.validation.AccountValidation;
+import com.transfer.transfer.account.validation.exception.AccountException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.Optional;
 
 @WebMvcTest(AccountRestController.class)
 public class AccountRestTest {
@@ -26,6 +25,24 @@ public class AccountRestTest {
 
     @MockBean
     private AccountService accountService;
+
+    @Test
+    public void shouldReturnHttpStatusNotFoundWhenUserIsNotSearchable() throws Exception {
+        Mockito.when(accountService.getAccount(Mockito.anyLong())).thenReturn(null);
+        Mockito.doThrow(AccountException.class).when(accountValidation).validateAccountExists(Mockito.anyLong());
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/account/10000"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(0));
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/account/10001"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(0));
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/account/10002"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(0));
+    }
 
     @Test
     public void userControllerShouldReturnJsonWithUserDataFromServer() throws Exception {
@@ -54,11 +71,11 @@ public class AccountRestTest {
                 .andExpect(MockMvcResultMatchers.content().string("{\"balance\":152.7,\"currency\":\"EUR\",\"userID\":10003}"));
     }
 
-    private Optional<AccountModel> constructNewUserModel(long userID, String currency, double balance) {
+    private AccountModel constructNewUserModel(long userID, String currency, double balance) {
         AccountModel accountModel = new AccountModel();
         accountModel.setUserID(userID);
         accountModel.setCurrency(currency);
         accountModel.setBalance(balance);
-        return Optional.of(accountModel);
+        return accountModel;
     }
 }

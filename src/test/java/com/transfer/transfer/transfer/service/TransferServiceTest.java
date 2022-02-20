@@ -18,13 +18,13 @@ public class TransferServiceTest {
 
     @Test
     public void shouldChangeBalancesOnTwoAccountsWithSameCurrency() {
-        AccountModel accountModelFrom = accountService.getAccount(10001L).get();
-        AccountModel accountModelTo = accountService.getAccount(10002L).get();
+        AccountModel accountModelFrom = accountService.getAccount(10001L);
+        AccountModel accountModelTo = accountService.getAccount(10002L);
 
         transferService.transferMoneyBetweenAccounts(10001L, 10002L, 12.58);
 
-        AccountModel accountModelFromAfterChanges = accountService.getAccount(10001L).get();
-        AccountModel accountModelToAfterChanges = accountService.getAccount(10002L).get();
+        AccountModel accountModelFromAfterChanges = accountService.getAccount(10001L);
+        AccountModel accountModelToAfterChanges = accountService.getAccount(10002L);
 
         Assertions.assertNotEquals(accountModelFrom.getBalance(), accountModelFromAfterChanges.getBalance());
         Assertions.assertNotEquals(accountModelTo.getBalance(), accountModelToAfterChanges.getBalance());
