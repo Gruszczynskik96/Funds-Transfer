@@ -1,5 +1,6 @@
 package com.transfer.transfer.transfer.service;
 
+import com.transfer.transfer.calculate.service.CalculateService;
 import com.transfer.transfer.currency.service.CurrencyService;
 import com.transfer.transfer.account.model.AccountModel;
 import com.transfer.transfer.account.service.AccountService;
@@ -7,8 +8,6 @@ import com.transfer.transfer.currency.validation.CurrencyValidation;
 import com.transfer.transfer.transfer.validation.TransferValidation;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Map;
 
 @Service
@@ -18,15 +17,18 @@ public class TransferServiceImpl implements TransferService {
     private final AccountService accountService;
     private final TransferValidation transferValidation;
     private final CurrencyValidation currencyValidation;
+    private final CalculateService calculateService;
 
     public TransferServiceImpl(CurrencyService currencyService,
                                AccountService accountService,
                                TransferValidation transferValidation,
-                               CurrencyValidation currencyValidation) {
+                               CurrencyValidation currencyValidation,
+                               CalculateService calculateService) {
         this.currencyService = currencyService;
         this.accountService = accountService;
         this.transferValidation = transferValidation;
         this.currencyValidation = currencyValidation;
+        this.calculateService = calculateService;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class TransferServiceImpl implements TransferService {
 
             double exchangeRate = currencyValidation.validateExchangeRateExists(exchangeRates, currencyReceiver);
 
-            double amountToSend = calculateExchangeRate(exchangeRate, amount);
+            double amountToSend = calculateService.multiply(exchangeRate, amount);
 
             transferValidation.validateTransferAmountIsGreaterThanZero(amountToSend);
             changeBalances(amount, accountModelFrom, amountToSend, accountModelTo);
@@ -58,18 +60,15 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private void addFunds(double amount, AccountModel accountModel) {
-        accountModel.setBalance(new BigDecimal(accountModel.getBalance() + amount).setScale(2, RoundingMode.HALF_DOWN).doubleValue());
+        double newBalance = calculateService.sum(accountModel.getBalance(), amount);
+        accountModel.setBalance(newBalance);
         accountService.saveAccount(accountModel);
     }
 
     private void subtractFunds(double amount, AccountModel accountModel) {
-        accountModel.setBalance(new BigDecimal(accountModel.getBalance() - amount).setScale(2, RoundingMode.HALF_DOWN).doubleValue());
+        double newBalance = calculateService.subtract(accountModel.getBalance(), amount);
+        accountModel.setBalance(newBalance);
         accountService.saveAccount(accountModel);
-    }
-
-    private double calculateExchangeRate(double exchangeRate, double amount) {
-        BigDecimal bigDecimal = new BigDecimal(amount * exchangeRate).setScale(2, RoundingMode.HALF_DOWN);
-        return bigDecimal.doubleValue();
     }
 
     private boolean checkIfAccountsHaveSameCurrencies(String currencyFrom, String currencyTo) {
