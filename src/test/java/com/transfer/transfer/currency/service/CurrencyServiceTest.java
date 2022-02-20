@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 @SpringBootTest
 public class CurrencyServiceTest {
 
@@ -32,5 +31,12 @@ public class CurrencyServiceTest {
         Assertions.assertTrue(currencyService.getCurrencyExchangeRates("USD").size() > 0);
         Assertions.assertTrue(currencyService.getCurrencyExchangeRates("EUR").size() > 0);
         Assertions.assertTrue(currencyService.getCurrencyExchangeRates("PLN").size() > 0);
+    }
+
+    @Test
+    public void shouldReturnMapWithEntriesForExchangeRates() {
+        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("USD").size() > 0);
+        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("PLN").size() > 0);
+        Assertions.assertTrue(currencyService.getCurrencyExchangeRates("EUR").size() > 0);
     }
 }

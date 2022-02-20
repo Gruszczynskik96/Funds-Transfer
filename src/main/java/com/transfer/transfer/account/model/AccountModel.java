@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -17,16 +13,16 @@ import javax.persistence.Table;
 public class AccountModel {
     @Column
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private long id;
 
-    @Column
+    @Column(name = "balance")
     private double balance;
 
-    @Column
+    @Column(name = "currency")
     private String currency;
 
-    @Column(unique = true)
+    @Column(name = "userID", unique = true)
     private long userID;
 }

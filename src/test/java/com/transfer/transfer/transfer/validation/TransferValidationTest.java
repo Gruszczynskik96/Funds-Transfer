@@ -48,4 +48,20 @@ public class TransferValidationTest {
         Mockito.when(accountModel.getBalance()).thenReturn(1250.78);
         Assertions.assertDoesNotThrow(() -> transferValidation.validateUserHasCorrectBalance(1250.77, Mockito.anyLong()));
     }
+
+    @Test
+    public void shouldThrowExceptionWhenFundsAreLesserOrEqualZero() {
+        Assertions.assertThrows(TransferException.class, () -> transferValidation.validateTransferAmountIsGreaterThanZero(0));
+        Assertions.assertThrows(TransferException.class, () -> transferValidation.validateTransferAmountIsGreaterThanZero(0.0));
+        Assertions.assertThrows(TransferException.class, () -> transferValidation.validateTransferAmountIsGreaterThanZero(0.00));
+        Assertions.assertThrows(TransferException.class, () -> transferValidation.validateTransferAmountIsGreaterThanZero(-100.0));
+    }
+
+    @Test
+    public void shouldNotThrowExceptionWhenFundsAreGreaterThanZero() {
+        Assertions.assertDoesNotThrow(() -> transferValidation.validateTransferAmountIsGreaterThanZero(1));
+        Assertions.assertDoesNotThrow(() -> transferValidation.validateTransferAmountIsGreaterThanZero(0.01));
+        Assertions.assertDoesNotThrow(() -> transferValidation.validateTransferAmountIsGreaterThanZero(11.0));
+        Assertions.assertDoesNotThrow(() -> transferValidation.validateTransferAmountIsGreaterThanZero(100.0));
+    }
 }

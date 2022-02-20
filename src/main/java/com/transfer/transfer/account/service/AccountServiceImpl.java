@@ -4,6 +4,7 @@ import com.transfer.transfer.account.model.AccountModel;
 import com.transfer.transfer.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -25,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void saveAccount(AccountModel accountModel) {
         accountRepository.save(accountModel);
     }

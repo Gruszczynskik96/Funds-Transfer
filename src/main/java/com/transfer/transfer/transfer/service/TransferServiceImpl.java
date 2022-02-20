@@ -45,6 +45,8 @@ public class TransferServiceImpl implements TransferService {
             double exchangeRate = currencyValidation.validateExchangeRateExists(exchangeRates, currencyReceiver);
 
             double amountToSend = calculateExchangeRate(exchangeRate, amount);
+
+            transferValidation.validateTransferAmountIsGreaterThanZero(amountToSend);
             changeBalances(amount, accountModelFrom, amountToSend, accountModelTo);
         }
     }

@@ -8,13 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class CurrencyValidationTest {
 
     @Autowired
-    CurrencyValidation currencyValidation;
+    private CurrencyValidation currencyValidation;
 
-    @Test
-    public void shouldThrowExceptionIfCurrencyIsInvalid() {
-    }
 
-    @Test
-    public void shouldNotThrowExceptionIfCurrencyIsValid() {
-    }
 }
