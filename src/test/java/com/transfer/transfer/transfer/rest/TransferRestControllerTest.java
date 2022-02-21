@@ -39,7 +39,7 @@ public class TransferRestControllerTest {
         Mockito.doThrow(TransferException.class).when(transferService).transferMoneyBetweenAccounts(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyDouble());
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/funds/10001")
+                        .put("/funds/10001")
                         .param("userID", "10002")
                         .param("amount", "100.1"))
                 .andExpect(MockMvcResultMatchers.status().is(0));
@@ -51,7 +51,7 @@ public class TransferRestControllerTest {
         Mockito.when(accountService.getAccount(10002L)).thenReturn(constructNewUserModel(10002L, "USD", 100.0));
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/funds/10001")
+                        .put("/funds/10001")
                         .param("userID", "10002")
                         .param("amount", "100"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -61,7 +61,7 @@ public class TransferRestControllerTest {
         Mockito.when(accountService.getAccount(10002L)).thenReturn(constructNewUserModel(10004L, "PLN", 100.0));
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/funds/10003")
+                        .put("/funds/10003")
                         .param("userID", "10004")
                         .param("amount", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

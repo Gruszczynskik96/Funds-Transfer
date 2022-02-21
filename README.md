@@ -26,3 +26,15 @@ Then, API should retrieve necessary variables.
 <b>BEWARE!</b>  
 When using this API, incorrect currency returns 200 status, and body's `result` parameter has `error` value.
 Therefore, if order to catch it, you need to check if after body is returned, the `result` parameter has `success` value set.
+
+# REST Endpoints
+As this project's role was mainly to allow transfer of funds between two accounts with currency exchange 
+between them, we have the following endpoints:
+<i><li>`GET` Endpoint used to return all user accounts</li></i>
+<i><li>`GET` Endpoint used to return a user account</li></i>
+<i><li>`POST` Endpoint to create user account</li></i>
+<i><li>`PUT` Endpoint to transfer funds between two accounts</li></i>  
+All endpoints are located in rest packages, within their respective classes.  
+In the future, it might be wise to allow changing user currency, and edit his pieces of information,
+as well as allow deleting user accounts.  
+Security layer would be necessary as well.

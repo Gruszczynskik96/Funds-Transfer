@@ -4,7 +4,11 @@ import com.transfer.transfer.account.validation.AccountValidation;
 import com.transfer.transfer.transfer.service.TransferService;
 import com.transfer.transfer.transfer.validation.TransferValidation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(path = "/funds")
@@ -22,7 +26,7 @@ public class TransferRestController {
         this.transferService = transferService;
     }
 
-    @PostMapping("/{senderUserID}")
+    @PutMapping("/{senderUserID}")
     public ResponseEntity<String> transferMoney(@PathVariable("senderUserID") long senderId,
                                                 @RequestParam("userID") long receiverID,
                                                 @RequestParam("amount") double amount) {
