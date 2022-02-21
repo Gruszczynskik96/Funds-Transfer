@@ -15,17 +15,18 @@ Loaded data are accounts with following settings:
 <i><li>Balance: 100.0, Currency: PLN, User ID: 10002</li></i>
 <i><li>Balance: 50.0, Currency: EUR, User ID: 10003</li></i>  
 
-Necessary IDs are automatically generated and ignored when object is returned through ResponseEntity.
+Necessary Database IDs are automatically generated and ignored when object is returned through ResponseEntity.  
+User ID <b>is not</b> Database's table ID!
 
 # Used API for Exchange Rates
-Project uses the free currency exchange rate from `exchangerate-api.com/docs/free` page.
+Project uses the free currency exchange rates from `exchangerate-api.com/docs/free`.  
 In order to use it properly, you need to access `https://open.er-api.com/v6/latest/` 
-and then provide currency ID (for example, `USD` for dollars).
+and then provide currency ID (for example, `USD` for dollars).  
 Then, API should retrieve necessary variables.
 
 <b>BEWARE!</b>  
-When using this API, incorrect currency returns 200 status, and body's `result` parameter has `error` value.
-Therefore, if order to catch it, you need to check if after body is returned, the `result` parameter has `success` value set.
+When using this API, incorrect currency returns 200 status, and body's `result` parameter has `error` value set.  
+Therefore, in order to catch it, you need to check if after body is returned, the `result` parameter has `success` value set.
 
 # REST Endpoints
 As this project's role was mainly to allow transfer of funds between two accounts with currency exchange 
