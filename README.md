@@ -2,9 +2,13 @@
 Funds Transfer based on Spring Boot with currency exchange.
 
 # Spring Boot Project
-This project is using the Spring Boot as a Framework.  
+This project is using the Spring Boot as a Framework, and using maven as build automation tool.  
 By default, it is running with Tomcat (the usual way).  
 Make sure to import all Maven dependencies.  
+Using Maven, run command `mvn clean package` to build project.  
+Once all tests are done and `package` complete, you can run created JAR file from `target` folder, using command line:  
+`java -jar target/Transfer-0.0.1-SNAPSHOT.jar com.transfer.transfer.TransferApplication`
+
 
 # H2 Database
 Project is using H2 Database in order to store necessary values.  
